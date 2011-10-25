@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('faker');
 
         $rootNode->children()
+            ->scalarNode('seed')->end()
             ->scalarNode('populator')->end()
             ->arrayNode('entities')
                 ->useAttributeAsKey('key')
