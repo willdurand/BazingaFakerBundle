@@ -41,13 +41,17 @@ class FakerExtension extends Extension
                 ;
         }
 
+        if (isset($config['locale'])) {
+            $container
+                ->getDefinition('faker.generator')
+                ->setArguments(array($config['locale']))
+                ;
+        }
+
         if (isset($config['populator'])) {
             $container->setParameter('faker.populator.class', $config['populator']);
         }
 
-        //  $populator->addEntity('Book', 5, array(
-        //      'ISBN' => function() use ($generator) { return $generator->randomNumber(13); }
-        //  ));
         $i = 0;
         foreach ($config['entities'] as $class => $params) {
             $number = isset($params['number']) ? $params['number'] : 5;

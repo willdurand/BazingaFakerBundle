@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('seed')->end()
                 ->scalarNode('populator')->end()
+                ->scalarNode('locale')->end()
                 ->arrayNode('entities')
                     ->useAttributeAsKey('name')
                     ->prototype('array')

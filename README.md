@@ -47,6 +47,7 @@ Actually, you just need to configure entities you want to populate and in which 
 
 faker:
     seed:      1234
+    locale:    en_GB 
     populator: \Your\Own\Populator
     entities:
         Acme\LibraryBundle\Model\Author:
