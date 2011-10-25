@@ -29,12 +29,28 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('faker');
 
-        $rootNode->children()
-            ->scalarNode('seed')->end()
-            ->scalarNode('populator')->end()
-            ->arrayNode('entities')
-                ->useAttributeAsKey('key')
-                ->prototype('scalar')->end()
+        $rootNode
+            ->children()
+                ->scalarNode('seed')->end()
+                ->scalarNode('populator')->end()
+                ->arrayNode('entities')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                    ->children()
+                        ->scalarNode('class')->end()
+                        ->scalarNode('number')->end()
+                        ->arrayNode('custom_formatters')
+                            ->useAttributeAsKey('column')
+                            ->prototype('array')
+                            ->children()
+                                ->scalarNode('method')->end()
+                                ->arrayNode('parameters')
+                                    ->prototype('scalar')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
             ;
 

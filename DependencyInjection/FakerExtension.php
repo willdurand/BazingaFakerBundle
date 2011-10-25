@@ -13,6 +13,8 @@ namespace Bazinga\Bundle\FakerBundle\DependencyInjection;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -43,11 +45,46 @@ class FakerExtension extends Extension
             $container->setParameter('faker.populator.class', $config['populator']);
         }
 
-        foreach ($config['entities'] as $class => $number) {
+        //  $populator->addEntity('Book', 5, array(
+        //      'ISBN' => function() use ($generator) { return $generator->randomNumber(13); }
+        //  ));
+        $i = 0;
+        foreach ($config['entities'] as $class => $params) {
+            $number = isset($params['number']) ? $params['number'] : 5;
+
+            $container
+                ->register('faker.entities.' . $i)
+                ->setClass('Faker\ORM\Propel\EntityPopulator')
+                ->setArguments(array($class))
+                ;
+
+            $formatters = array();
+            if (isset($params['custom_formatters'])) {
+                $j = 0;
+                foreach ($params['custom_formatters'] as $column => $formatter) {
+                    $method = $formatter['method'];
+                    $parameters = $formatter['parameters'];
+
+                    $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
+                        'closure',
+                        array(new Reference('faker.generator'), $method, $parameters)
+                    ))->setFactoryService(
+                        'faker.formatter_factory'
+                    )->setFactoryMethod(
+                        'createClosure'
+                    );
+
+                    $formatters[$column] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
+                    $j++;
+                }
+            }
+
             $container
                 ->getDefinition('faker.populator')
-                ->addMethodCall('addEntity', array($class, $number))
+                ->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters))
                 ;
+
+            $i++;
         }
     }
 }

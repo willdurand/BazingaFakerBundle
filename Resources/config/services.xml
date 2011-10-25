@@ -10,9 +10,12 @@
 
     <services>
         <service id="faker.generator" factory-class="%faker.generator.class%" class="%faker.generator.class%" factory-method="create" />
+
         <service id="faker.populator" class="%faker.populator.class%">
             <argument type="service" id="faker.generator" />
         </service>
+
+        <service id="faker.formatter_factory" class="Bazinga\Bundle\FakerBundle\Factory\FormatterFactory"></service>
     </services>
 
 </container>
