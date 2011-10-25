@@ -37,20 +37,44 @@ Register the bundle in `app/AppKernel.php`:
         );
     }
 
-## Configuration ##
+## Reference Configuration ##
 
 In order to use the `BazingaFakerBundle`, you have to configure it.
-Actually, you just need to configure entities you want to populate and in which quantity.
+Actually, you just need to configure entities you want to populate and in which quantity (default: 5).
 
 ``` yaml
 # app/config/config*.yml
 
 faker:
-#    seed:      1234
-#    populator: \Your\Own\Populator
+    seed:      1234
+    populator: \Your\Own\Populator
     entities:
-#        Acme\LibraryBundle\Model\Author: 10
-#        Acme\LibraryBundle\Model\Book: 5
+        Acme\LibraryBundle\Model\Author:
+            number: 5
+        Acme\LibraryBundle\Model\Book:
+            number: 5
+            custom_formatters:
+                Isbn:   { method: lexify, parameters: [ '?????????????' ] }
+```
+
+You can add your own formatter for each column of each entity:
+
+``` yaml
+faker:
+    entities:
+        Acme\LibraryBundle\Model\Book:
+            custom_formatters:
+                Isbn:   { method: randomElement, parameters: [ 'aaaaaaaaaa', 'bbbbbbbb', 'cccccccc' ] }
+```
+
+You can use all formatters provided by Faker, with or without arguments:
+
+``` yaml
+faker:
+    entities:
+        Acme\LibraryBundle\Model\Book:
+            custom_formatters:
+                Isbn:   { method: word }
 ```
 
 
