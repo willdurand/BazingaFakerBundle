@@ -69,17 +69,21 @@ class FakerExtension extends Extension
                     $method = $formatter['method'];
                     $parameters = $formatter['parameters'];
 
-                    $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
-                        'closure',
-                        array(new Reference('faker.generator'), $method, $parameters)
-                    ))->setFactoryService(
-                        'faker.formatter_factory'
-                    )->setFactoryMethod(
-                        'createClosure'
-                    );
+                    if (null === $method) {
+                        $formatters[$column] = null;
+                    } else {
+                        $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
+                            'closure',
+                            array(new Reference('faker.generator'), $method, $parameters)
+                        ))->setFactoryService(
+                            'faker.formatter_factory'
+                        )->setFactoryMethod(
+                            'createClosure'
+                        );
 
-                    $formatters[$column] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
-                    $j++;
+                        $formatters[$column] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
+                        $j++;
+                    }
                 }
             }
 
