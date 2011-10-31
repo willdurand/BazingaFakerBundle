@@ -52,13 +52,17 @@ class FakerExtension extends Extension
             $container->setParameter('faker.populator.class', $config['populator']);
         }
 
+        if (isset($config['entity'])) {
+            $container->setParameter('faker.entity.class', $config['entity']);
+        }
+
         $i = 0;
         foreach ($config['entities'] as $class => $params) {
             $number = isset($params['number']) ? $params['number'] : 5;
 
             $container
                 ->register('faker.entities.' . $i)
-                ->setClass('Faker\ORM\Propel\EntityPopulator')
+                ->setClass($container->getParameter('faker.entity.class'))
                 ->setArguments(array($class))
                 ;
 

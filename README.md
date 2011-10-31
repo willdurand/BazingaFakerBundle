@@ -46,9 +46,10 @@ Actually, you just need to configure entities you want to populate and in which 
 # app/config/config*.yml
 
 faker:
-    seed:      1234
-    locale:    en_GB 
-    populator: \Your\Own\Populator
+    seed:       1234
+    locale:     en_GB
+    populator:  \Your\Own\Populator
+    entity:     \Your\Own\EntityPopulator
     entities:
         Acme\LibraryBundle\Model\Author:
             number: 5

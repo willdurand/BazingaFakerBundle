@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="faker.generator.class">Faker\Factory</parameter>
         <parameter key="faker.populator.class">Faker\ORM\Propel\Populator</parameter>
+        <parameter key="faker.entity.class">Faker\ORM\Propel\EntityPopulator</parameter>
     </parameters>
 
     <services>
