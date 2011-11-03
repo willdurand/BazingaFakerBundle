@@ -40,16 +40,22 @@ Register the bundle in `app/AppKernel.php`:
 ## Reference Configuration ##
 
 In order to use the `BazingaFakerBundle`, you have to configure it.
-Actually, you just need to configure entities you want to populate and in which quantity (default: 5).
+
+First of all if you use Doctrine and not Propel you must define it so that the bundle can reconfigure itself:
 
 ``` yaml
 # app/config/config*.yml
 
 faker:
-    seed:       1234
-    locale:     en_GB
-    populator:  \Your\Own\Populator
-    entity:     \Your\Own\EntityPopulator
+    orm: doctrine
+```
+
+Afterwards you just need to configure which entities you want to populate and in which quantity (default: 5).
+
+``` yaml
+# app/config/config*.yml
+
+faker:
     entities:
         Acme\LibraryBundle\Model\Author:
             number: 5
@@ -87,6 +93,16 @@ faker:
         Acme\LibraryBundle\Model\Book:
             custom_formatters:
                 Slug:   { method: null }
+```
+
+There are a few more optional settings available for more advanced customization of Faker:
+
+``` yaml
+faker:
+    seed:       1234
+    locale:     en_GB
+    populator:  Your\Own\Populator
+    entity:     Your\Own\EntityPopulator
 ```
 
 
