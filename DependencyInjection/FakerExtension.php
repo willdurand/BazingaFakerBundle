@@ -34,10 +34,12 @@ class FakerExtension extends Extension
             $loader->load('services.xml');
         }
 
-        $container
-            ->getDefinition('faker.generator')
-            ->addMethodCall('seed', array($config['seed']))
-            ;
+        if (null !== $config['seed']) {
+            $container
+                ->getDefinition('faker.generator')
+                ->addMethodCall('seed', array($config['seed']))
+                ;
+        }
 
         $container
             ->getDefinition('faker.generator')

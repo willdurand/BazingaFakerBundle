@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                 })
             ->end()
             ->children()
-                ->scalarNode('seed')->defaultValue(0)->end()
+                ->scalarNode('seed')->defaultValue(rand())->end()
                 ->scalarNode('orm')
                     ->defaultValue('propel')
                     ->validate()
