@@ -38,15 +38,14 @@ class Configuration implements ConfigurationInterface
                     return $v;
                 })
             ->end()
-            ->validate()
-                ->ifTrue(function($v) {
-                    return !in_array($v['orm'], array('doctrine', 'propel'));
-                })
-                ->thenInvalid('"orm" must be one of ("doctrine", "propel")')
-            ->end()
             ->children()
                 ->scalarNode('seed')->defaultValue(0)->end()
-                ->scalarNode('orm')->defaultValue('propel')->end()
+                ->scalarNode('orm')
+                    ->defaultValue('propel')
+                    ->validate()
+                        ->ifNotInArray(array('doctrine', 'propel'))->thenInvalid('"orm" must be one of ("doctrine", "propel")')
+                    ->end()
+                ->end()
                 ->scalarNode('populator')->defaultNull()->end()
                 ->scalarNode('entity')->defaultNull()->end()
                 ->scalarNode('locale')->defaultValue(\Faker\Factory::DEFAULT_LOCALE)->end()
