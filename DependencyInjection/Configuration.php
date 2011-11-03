@@ -30,11 +30,26 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('faker');
 
         $rootNode
+            ->beforeNormalization()
+                ->always(function($v) {
+                    if (isset($v['orm'])) {
+                        $v['orm'] = strtolower($v['orm']);
+                    }
+                    return $v;
+                })
+            ->end()
+            ->validate()
+                ->ifTrue(function($v) {
+                    return !in_array($v['orm'], array('doctrine', 'propel'));
+                })
+                ->thenInvalid('"orm" must be one of ("doctrine", "propel")')
+            ->end()
             ->children()
-                ->scalarNode('seed')->end()
-                ->scalarNode('populator')->end()
-                ->scalarNode('entity')->end()
-                ->scalarNode('locale')->end()
+                ->scalarNode('seed')->defaultValue(0)->end()
+                ->scalarNode('orm')->defaultValue('propel')->end()
+                ->scalarNode('populator')->defaultNull()->end()
+                ->scalarNode('entity')->defaultNull()->end()
+                ->scalarNode('locale')->defaultValue(\Faker\Factory::DEFAULT_LOCALE)->end()
                 ->arrayNode('entities')
                     ->useAttributeAsKey('name')
                     ->prototype('array')
