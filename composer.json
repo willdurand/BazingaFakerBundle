@@ -1,0 +1,21 @@
+{
+  "name": "willdurand/faker-bundle",
+  "description": "Put the awesome Faker lib into the DIC and populate your database with fake data.",
+  "keywords": ["faker", "fixtures", "data"],
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "William Durand",
+      "email": "william.durand1@gmail.com"
+    }
+  ],
+  "require": {
+    "symfony/framework-bundle": "2.*",
+    "fzaninotto/faker": "*"
+  },
+  "autoload": {
+    "psr-0": { "Bazinga\\Bundle\\FakerBundle": "" }
+  },
+  "target-dir": "Bazinga/Bundle/FakerBundle"
+}
