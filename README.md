@@ -1,5 +1,7 @@
 # FakerBundle #
 
+[![Build Status](https://secure.travis-ci.org/willdurand/BazingaFakerBundle.png)](http://travis-ci.org/willdurand/BazingaFakerBundle)
+
 This bundle integrates [Faker](https://github.com/fzaninotto/Faker), a PHP library that generates fake data for you.
 It provides a command to load random data for your model objects as simple as possible.
 
