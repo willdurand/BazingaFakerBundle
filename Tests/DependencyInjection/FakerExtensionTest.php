@@ -24,7 +24,7 @@ class FakerExtensionTest extends TestCase
     public function getContainer()
     {
         return new ContainerBuilder(new ParameterBag(array(
-            'kernel.root_dir' => __DIR__.'/../../../../',
+            'kernel.root_dir' => __DIR__.'/../../',
         )));
     }
 
