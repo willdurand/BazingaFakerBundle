@@ -21,7 +21,7 @@ use Symfony\Component\Config\Definition\Processor;
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class FakerExtension extends Extension
+class BazingaFakerExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -56,10 +56,18 @@ class FakerExtension extends Extension
             $container
                 ->getDefinition('faker.populator')
                 ->replaceArgument(1, new Reference('doctrine.orm.entity_manager'))
-                ;
+            ;
 
             $container->setParameter('faker.populator.class', 'Faker\ORM\Doctrine\Populator');
             $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
+            break;
+        case 'mandango':
+            $container
+                ->getDefinition('faker.populator')
+                ->replaceArgument(1, new Reference('mandango'))
+            ;
+            $container->setParameter('faker.populator.class', 'Faker\ORM\Mandango\Populator');
+            $container->setParameter('faker.entity.class', 'Faker\ORM\Mandango\EntityPopulator');
             break;
         }
 
@@ -81,22 +89,30 @@ class FakerExtension extends Extension
                     ->register('faker.entities.' . $i)
                     ->setClass($container->getParameter('faker.entity.class'))
                     ->setArguments(array($class))
-                    ;
+                ;
                 break;
 
             case 'doctrine':
                 $container
-                    ->register('faker.entities.' . $i . '.metadata')
+                    ->register('faker.entities.'.$i.'.metadata')
                     ->setFactoryService('doctrine.orm.entity_manager')
                     ->setFactoryMethod('getClassMetadata')
                     ->setClass('Doctrine\ORM\Mapping\ClassMetadata')
-                    ->setArguments(array($class));
+                    ->setArguments(array($class))
+                ;
 
                 $container
-                    ->register('faker.entities.' . $i)
+                    ->register('faker.entities.'.$i)
                     ->setClass($container->getParameter('faker.entity.class'))
                     ->setArguments(array(new Reference('faker.entities.' . $i . '.metadata')))
-                    ;
+                ;
+                break;
+            case 'mandango':
+                $container
+                    ->register('faker.entities.'.$i)
+                    ->setClass($container->getParameter('faker.entity.class'))
+                    ->setArguments(array($class))
+                ;
                 break;
             }
 

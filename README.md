@@ -43,13 +43,20 @@ Register the bundle in `app/AppKernel.php`:
 
 In order to use the `BazingaFakerBundle`, you have to configure it.
 
-First of all if you use Doctrine and not Propel you must define it so that the bundle can reconfigure itself:
+First of all if you use Doctrine or Mandango instead of Propel you must define it so that the bundle can reconfigure itself:
 
 ``` yaml
 # app/config/config*.yml
 
 faker:
     orm: doctrine
+```
+
+``` yaml
+# app/config/config*.yml
+
+faker:
+    orm: mandango
 ```
 
 Afterwards you just need to configure which entities you want to populate and in which quantity (default: 5).
