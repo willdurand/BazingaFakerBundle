@@ -11,7 +11,7 @@
 namespace Bazinga\Bundle\FakerBundle\Tests\DependencyInjection;
 
 use Bazinga\Bundle\FakerBundle\Tests\TestCase;
-use Bazinga\Bundle\FakerBundle\DependencyInjection\FakerExtension;
+use Bazinga\Bundle\FakerBundle\DependencyInjection\BazingaFakerExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class FakerExtensionTest extends TestCase
+class BazingaFakerExtensionTest extends TestCase
 {
     public function getContainer()
     {
@@ -31,7 +31,7 @@ class FakerExtensionTest extends TestCase
     public function testLoadWithCustomPopulator()
     {
         $container = $this->getContainer();
-        $loader    = new FakerExtension();
+        $loader    = new BazingaFakerExtension();
 
         $loader->load(array(array('populator' => '\Foo\Bar')), $container);
 
