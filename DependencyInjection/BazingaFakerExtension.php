@@ -47,28 +47,30 @@ class BazingaFakerExtension extends Extension
             ;
 
         switch ($config['orm']) {
-        case 'propel':
-            $container->setParameter('faker.populator.class', 'Faker\ORM\Propel\Populator');
-            $container->setParameter('faker.entity.class', 'Faker\ORM\Propel\EntityPopulator');
-            break;
+            case 'propel':
+                $container->setParameter('faker.populator.class', 'Faker\ORM\Propel\Populator');
+                $container->setParameter('faker.entity.class', 'Faker\ORM\Propel\EntityPopulator');
+                break;
 
-        case 'doctrine':
-            $container
-                ->getDefinition('faker.populator')
-                ->replaceArgument(1, new Reference('doctrine.orm.entity_manager'))
-            ;
+            case 'doctrine':
+                $container
+                    ->getDefinition('faker.populator')
+                    ->replaceArgument(1, new Reference('doctrine.orm.entity_manager'))
+                    ;
 
-            $container->setParameter('faker.populator.class', 'Faker\ORM\Doctrine\Populator');
-            $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
-            break;
-        case 'mandango':
-            $container
-                ->getDefinition('faker.populator')
-                ->replaceArgument(1, new Reference('mandango'))
-            ;
-            $container->setParameter('faker.populator.class', 'Faker\ORM\Mandango\Populator');
-            $container->setParameter('faker.entity.class', 'Faker\ORM\Mandango\EntityPopulator');
-            break;
+                $container->setParameter('faker.populator.class', 'Faker\ORM\Doctrine\Populator');
+                $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
+                break;
+
+            case 'mandango':
+                $container
+                    ->getDefinition('faker.populator')
+                    ->replaceArgument(1, new Reference('mandango'))
+                    ;
+
+                $container->setParameter('faker.populator.class', 'Faker\ORM\Mandango\Populator');
+                $container->setParameter('faker.entity.class', 'Faker\ORM\Mandango\EntityPopulator');
+                break;
         }
 
         if ($config['populator']) {
@@ -84,36 +86,37 @@ class BazingaFakerExtension extends Extension
             $number = isset($params['number']) ? $params['number'] : 5;
 
             switch ($config['orm']) {
-            case 'propel':
-                $container
-                    ->register('faker.entities.' . $i)
-                    ->setClass($container->getParameter('faker.entity.class'))
-                    ->setArguments(array($class))
-                ;
-                break;
+                case 'propel':
+                    $container
+                        ->register('faker.entities.' . $i)
+                        ->setClass($container->getParameter('faker.entity.class'))
+                        ->setArguments(array($class))
+                        ;
+                    break;
 
-            case 'doctrine':
-                $container
-                    ->register('faker.entities.'.$i.'.metadata')
-                    ->setFactoryService('doctrine.orm.entity_manager')
-                    ->setFactoryMethod('getClassMetadata')
-                    ->setClass('Doctrine\ORM\Mapping\ClassMetadata')
-                    ->setArguments(array($class))
-                ;
+                case 'doctrine':
+                    $container
+                        ->register('faker.entities.'.$i.'.metadata')
+                        ->setFactoryService('doctrine.orm.entity_manager')
+                        ->setFactoryMethod('getClassMetadata')
+                        ->setClass('Doctrine\ORM\Mapping\ClassMetadata')
+                        ->setArguments(array($class))
+                        ;
 
-                $container
-                    ->register('faker.entities.'.$i)
-                    ->setClass($container->getParameter('faker.entity.class'))
-                    ->setArguments(array(new Reference('faker.entities.' . $i . '.metadata')))
-                ;
-                break;
-            case 'mandango':
-                $container
-                    ->register('faker.entities.'.$i)
-                    ->setClass($container->getParameter('faker.entity.class'))
-                    ->setArguments(array($class))
-                ;
-                break;
+                    $container
+                        ->register('faker.entities.'.$i)
+                        ->setClass($container->getParameter('faker.entity.class'))
+                        ->setArguments(array(new Reference('faker.entities.' . $i . '.metadata')))
+                        ;
+                    break;
+
+                case 'mandango':
+                    $container
+                        ->register('faker.entities.'.$i)
+                        ->setClass($container->getParameter('faker.entity.class'))
+                        ->setArguments(array($class))
+                        ;
+                    break;
             }
 
             $formatters = array();
