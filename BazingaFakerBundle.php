@@ -15,6 +15,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class FakerBundle extends Bundle
+class BazingaFakerBundle extends Bundle
 {
 }
