@@ -35,7 +35,7 @@ Register the bundle in `app/AppKernel.php`:
     {
         return array(
             // ...
-            new Bazinga\Bundle\FakerBundle\FakerBundle(),
+            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
         );
     }
 
