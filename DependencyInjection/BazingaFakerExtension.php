@@ -129,6 +129,17 @@ class BazingaFakerExtension extends Extension
                     if (null === $method) {
                         $formatters[$column] = null;
                     } else {
+                        
+                        // added the possibility to add a range of elements in parameters .
+                        // is useful in combination with randomElement
+                       if (strcmp($method, 'randomElement') == 0 && count($parameters) === 1 && 
+                               (preg_match("/^range\(('\w+?')\.\.('\w+?')\)$/i", $parameters[0], $param_matches) ||
+                                preg_match("/^range\((\d+?)\.\.(\d+?)\)$/i", $parameters[0], $param_matches))) {
+                            if (isset($param_matches) && count($param_matches) === 3) {
+                                $parameters = range($param_matches[1], $param_matches[2]);
+                            }
+                        }
+
                         $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
                             'closure',
                             array(new Reference('faker.generator'), $method, $parameters)
