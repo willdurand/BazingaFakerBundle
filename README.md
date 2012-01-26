@@ -5,9 +5,6 @@
 This bundle integrates [Faker](https://github.com/fzaninotto/Faker), a PHP library that generates fake data for you.
 It provides a command to load random data for your model objects as simple as possible.
 
-**Note:** It only works out of the box with [Propel ORM](https://github.com/propelorm/Propel) at the moment
-but you can configure your own `populator` so it can works with all database abstraction systems.
-
 
 ## Installation ##
 
