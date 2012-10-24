@@ -78,7 +78,7 @@ bazinga_faker:
     entities:
         Acme\LibraryBundle\Model\Book:
             custom_formatters:
-                Isbn:   { method: randomElement, parameters: [ 'aaaaaaaaaa', 'bbbbbbbb', 'cccccccc' ] }
+                Isbn:   { method: randomElement, parameters: [ [ 'aaaaaaaaaa', 'bbbbbbbb', 'cccccccc' ] ] }
 ```
 
 You can use all formatters provided by Faker, with or without arguments:

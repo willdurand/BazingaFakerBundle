@@ -15,14 +15,12 @@ namespace Bazinga\Bundle\FakerBundle\Factory;
  */
 class FormatterFactory
 {
-    static public function createClosure($generator, $method, $parameters = array())
+    static public function createClosure($generator, $method, array $parameters = array())
     {
         if (0 === count($parameters)) {
             return function() use ($generator, $method) { return $generator->$method(); };
-        } elseif (1 === count($parameters)) {
-            return function() use ($generator, $method, $parameters) { return $generator->$method($parameters[0]); };
         }
 
-        return function() use ($generator, $method, $parameters) { return $generator->$method($parameters); };
+        return function() use ($generator, $method, $parameters) { return call_user_func_array(array($generator, $method), (array) $parameters); };
     }
 }

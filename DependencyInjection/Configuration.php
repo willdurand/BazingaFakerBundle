@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->scalarNode('method')->end()
                                 ->arrayNode('parameters')
-                                    ->prototype('scalar')->end()
+                                    ->prototype('variable')->end()
                                 ->end()
                             ->end()
                         ->end()
