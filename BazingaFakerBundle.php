@@ -11,10 +11,19 @@
 namespace Bazinga\Bundle\FakerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Bazinga\Bundle\FakerBundle\DependencyInjection\Compiler\AddProvidersPass;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
 class BazingaFakerBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new AddProvidersPass());
+    }
 }
