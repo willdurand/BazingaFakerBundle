@@ -144,9 +144,36 @@ class BazingaFakerExtension extends Extension
                 }
             }
 
+            $customModifiers = array();
+            if (isset($params['custom_modifiers'])) {
+                $j = 0;
+                foreach ($params['custom_modifiers'] as $methodName => $arguments) {
+                    foreach ($arguments as $key => $formatter) {
+                        $method = $formatter['method'];
+                        $parameters = $formatter['parameters'];
+
+                        if (null === $method) {
+                            $customModifiers[$methodName][$key] = null;
+                        } else {
+                            $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
+                                'closure',
+                                array(new Reference('faker.generator'), $method, $parameters)
+                            ))->setFactoryService(
+                                'faker.formatter_factory'
+                            )->setFactoryMethod(
+                                'createClosure'
+                            );
+
+                            $customModifiers[$methodName][$key] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
+                        }
+                        $j++;
+                    }
+                }
+            }
+
             $container
                 ->getDefinition('faker.populator')
-                ->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters))
+                ->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters, $customModifiers, $params['generate_id']))
                 ;
 
             $i++;
