@@ -16,7 +16,7 @@ Add the [Faker](https://github.com/fzaninotto/Faker) library:
 
 > git submodule add git://github.com/fzaninotto/Faker.git vendor/faker
 
-Register the namespace in `app/autoload.php`:
+Register the namespace in `app/autoload.php` (Symfony 2):
 
     // app/autoload.php
     $loader->registerNamespaces(array(
@@ -24,6 +24,12 @@ Register the namespace in `app/autoload.php`:
         'Bazinga'          => __DIR__.'/../vendor/bundles',
         'Faker'            => __DIR__.'/../vendor/faker/src',
     ));
+
+Register the namespace in `app/autoload.php` (Symfony 2.1):
+
+    // app/autoload.php
+    $loader->add('Bazinga', __DIR__.'/../vendor/bundles');
+    $loader->add('Faker', __DIR__.'/../vendor/faker/src');
 
 Register the bundle in `app/AppKernel.php`:
 
