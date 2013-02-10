@@ -171,10 +171,15 @@ class BazingaFakerExtension extends Extension
                 }
             }
 
-            $container
-                ->getDefinition('faker.populator')
-                ->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters, $customModifiers, $params['generate_id']))
-                ;
+            $definition = $container->getDefinition('faker.populator');
+            switch($config['orm']) {
+                case 'doctrine':
+                    $definition->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters, $customModifiers, $params['generate_id']));
+                    break;
+                default:
+                    $definition->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters));
+                    break;
+            }
 
             $i++;
         }
