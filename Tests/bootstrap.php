@@ -1,7 +1,15 @@
 <?php
 
-if (file_exists($file = __DIR__.'/autoload.php')) {
-    require_once $file;
-} elseif (file_exists($file = __DIR__.'/autoload.php.dist')) {
-    require_once $file;
+if (!($loader = @include __DIR__ . '/../vendor/autoload.php')) {
+    die(<<<EOT
+You need to install the project dependencies using Composer:
+$ wget http://getcomposer.org/composer.phar
+OR
+$ curl -s https://getcomposer.org/installer | php
+$ php composer.phar install --dev
+$ phpunit
+EOT
+    );
 }
+
+$loader->add('Bazinga\FakerBundle\Tests', __DIR__);

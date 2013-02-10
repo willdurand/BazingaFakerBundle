@@ -11,11 +11,12 @@
     }
   ],
   "require": {
-    "symfony/framework-bundle": "2.*",
+    "symfony/framework-bundle": ">=2.0,<2.3-dev",
     "fzaninotto/faker": "1.1.*"
   },
   "autoload": {
     "psr-0": { "Bazinga\\Bundle\\FakerBundle": "" }
   },
-  "target-dir": "Bazinga/Bundle/FakerBundle"
+  "target-dir": "Bazinga/Bundle/FakerBundle",
+  "minimum-stability": "dev"
 }
