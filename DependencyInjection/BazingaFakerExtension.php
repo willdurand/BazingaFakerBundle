@@ -38,13 +38,13 @@ class BazingaFakerExtension extends Extension
             $container
                 ->getDefinition('faker.generator')
                 ->addMethodCall('seed', array($config['seed']))
-                ;
+            ;
         }
 
         $container
             ->getDefinition('faker.generator')
             ->setArguments(array($config['locale']))
-            ;
+        ;
 
         switch ($config['orm']) {
             case 'propel':
@@ -56,7 +56,17 @@ class BazingaFakerExtension extends Extension
                 $container
                     ->getDefinition('faker.populator')
                     ->replaceArgument(1, new Reference('doctrine.orm.entity_manager'))
-                    ;
+                ;
+
+                $container->setParameter('faker.populator.class', 'Faker\ORM\Doctrine\Populator');
+                $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
+                break;
+
+            case 'doctrinemongo':
+                $container
+                    ->getDefinition('faker.populator')
+                    ->replaceArgument(1, new Reference('doctrine.odm.mongodb.document_manager'))
+                ;
 
                 $container->setParameter('faker.populator.class', 'Faker\ORM\Doctrine\Populator');
                 $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
@@ -66,7 +76,7 @@ class BazingaFakerExtension extends Extension
                 $container
                     ->getDefinition('faker.populator')
                     ->replaceArgument(1, new Reference('mandango'))
-                    ;
+                ;
 
                 $container->setParameter('faker.populator.class', 'Faker\ORM\Mandango\Populator');
                 $container->setParameter('faker.entity.class', 'Faker\ORM\Mandango\EntityPopulator');
@@ -91,7 +101,7 @@ class BazingaFakerExtension extends Extension
                         ->register('faker.entities.' . $i)
                         ->setClass($container->getParameter('faker.entity.class'))
                         ->setArguments(array($class))
-                        ;
+                    ;
                     break;
 
                 case 'doctrine':
@@ -101,13 +111,29 @@ class BazingaFakerExtension extends Extension
                         ->setFactoryMethod('getClassMetadata')
                         ->setClass('Doctrine\ORM\Mapping\ClassMetadata')
                         ->setArguments(array($class))
-                        ;
+                    ;
 
                     $container
                         ->register('faker.entities.'.$i)
                         ->setClass($container->getParameter('faker.entity.class'))
                         ->setArguments(array(new Reference('faker.entities.' . $i . '.metadata')))
-                        ;
+                    ;
+                    break;
+
+                case 'doctrinemongo':
+                    $container
+                        ->register('faker.entities.'.$i.'.metadata')
+                        ->setFactoryService('doctrine.odm.mongodb.document_manager')
+                        ->setFactoryMethod('getClassMetadata')
+                        ->setClass('Doctrine\ODM\MongoDB\Mapping\ClassMetadata')
+                        ->setArguments(array($class))
+                    ;
+
+                    $container
+                        ->register('faker.entities.'.$i)
+                        ->setClass($container->getParameter('faker.entity.class'))
+                        ->setArguments(array(new Reference('faker.entities.' . $i . '.metadata')))
+                    ;
                     break;
 
                 case 'mandango':
@@ -115,7 +141,7 @@ class BazingaFakerExtension extends Extension
                         ->register('faker.entities.'.$i)
                         ->setClass($container->getParameter('faker.entity.class'))
                         ->setArguments(array($class))
-                        ;
+                    ;
                     break;
             }
 
@@ -133,10 +159,10 @@ class BazingaFakerExtension extends Extension
                             'closure',
                             array(new Reference('faker.generator'), $method, $parameters)
                         ))->setFactoryService(
-                            'faker.formatter_factory'
-                        )->setFactoryMethod(
-                            'createClosure'
-                        );
+                                'faker.formatter_factory'
+                            )->setFactoryMethod(
+                                'createClosure'
+                            );
 
                         $formatters[$column] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
                         $j++;
@@ -159,10 +185,10 @@ class BazingaFakerExtension extends Extension
                                 'closure',
                                 array(new Reference('faker.generator'), $method, $parameters)
                             ))->setFactoryService(
-                                'faker.formatter_factory'
-                            )->setFactoryMethod(
-                                'createClosure'
-                            );
+                                    'faker.formatter_factory'
+                                )->setFactoryMethod(
+                                    'createClosure'
+                                );
 
                             $customModifiers[$methodName][$key] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
                         }
@@ -174,6 +200,7 @@ class BazingaFakerExtension extends Extension
             $definition = $container->getDefinition('faker.populator');
             switch($config['orm']) {
                 case 'doctrine':
+                case 'doctrinemongo':
                     $definition->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters, $customModifiers, $params['generate_id']));
                     break;
                 default:

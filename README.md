@@ -40,13 +40,20 @@ Register the bundle in `app/AppKernel.php`:
 
 In order to use the `BazingaFakerBundle`, you have to configure it.
 
-First of all if you use Doctrine or Mandango instead of Propel you must define it so that the bundle can reconfigure itself:
+First of all if you use Doctrine, Doctrine MongoDb or Mandango instead of Propel you must define it so that the bundle can reconfigure itself:
 
 ``` yaml
 # app/config/config*.yml
 
 bazinga_faker:
     orm: doctrine
+```
+
+``` yaml
+# app/config/config*.yml
+
+bazinga_faker:
+    orm: doctrinemongo
 ```
 
 ``` yaml

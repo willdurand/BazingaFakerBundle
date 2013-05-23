@@ -43,7 +43,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('orm')
                     ->defaultValue('propel')
                     ->validate()
-                        ->ifNotInArray(array('doctrine', 'propel', 'mandango'))->thenInvalid('"orm" must be one of ("doctrine", "propel", "mandango")')
+                        ->ifNotInArray(array('doctrine', 'propel', 'mandango', 'doctrinemongo'))->thenInvalid('"orm" must be one of ("doctrine", "propel", "mandango", "doctrinemongo")')
                     ->end()
                 ->end()
                 ->scalarNode('populator')->defaultNull()->end()
