@@ -6,7 +6,29 @@ This bundle integrates [Faker](https://github.com/fzaninotto/Faker), a PHP libra
 It provides a command to load random data for your model objects as simple as possible.
 
 
-## Installation ##
+## Easy installation with composer ##
+
+Configure composer.json as following :
+
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/jeremieca/BazingaFakerBundle.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/fzaninotto/Faker.git"
+        }
+    ],
+    "require": {
+        // ...
+        "willdurand/faker-bundle": "*",
+        "fzaninotto/faker": "*"
+    }
+
+Then, execute "composer update".
+
+## Manual installation ##
 
 Install this bundle as usual:
 
