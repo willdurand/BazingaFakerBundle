@@ -62,6 +62,16 @@ class BazingaFakerExtension extends Extension
                 $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
                 break;
 
+            case 'doctrinemongo':
+                $container
+                    ->getDefinition('faker.populator')
+                    ->replaceArgument(1, new Reference('doctrine.odm.mongodb.document_manager'))
+                    ;
+
+                $container->setParameter('faker.populator.class', 'Faker\ORM\Doctrine\Populator');
+                $container->setParameter('faker.entity.class', 'Faker\ORM\Doctrine\EntityPopulator');
+                break;
+
             case 'mandango':
                 $container
                     ->getDefinition('faker.populator')
@@ -100,6 +110,22 @@ class BazingaFakerExtension extends Extension
                         ->setFactoryService('doctrine.orm.entity_manager')
                         ->setFactoryMethod('getClassMetadata')
                         ->setClass('Doctrine\ORM\Mapping\ClassMetadata')
+                        ->setArguments(array($class))
+                        ;
+
+                    $container
+                        ->register('faker.entities.'.$i)
+                        ->setClass($container->getParameter('faker.entity.class'))
+                        ->setArguments(array(new Reference('faker.entities.' . $i . '.metadata')))
+                        ;
+                    break;
+
+                case 'doctrinemongo':
+                    $container
+                        ->register('faker.entities.'.$i.'.metadata')
+                        ->setFactoryService('doctrine.odm.mongodb.document_manager')
+                        ->setFactoryMethod('getClassMetadata')
+                        ->setClass('Doctrine\ODM\MongoDB\Mapping\ClassMetadata')
                         ->setArguments(array($class))
                         ;
 
@@ -174,6 +200,7 @@ class BazingaFakerExtension extends Extension
             $definition = $container->getDefinition('faker.populator');
             switch($config['orm']) {
                 case 'doctrine':
+                case 'doctrinemongo':
                     $definition->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters, $customModifiers, $params['generate_id']));
                     break;
                 default:
