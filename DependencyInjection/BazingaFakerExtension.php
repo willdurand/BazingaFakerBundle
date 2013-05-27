@@ -185,10 +185,10 @@ class BazingaFakerExtension extends Extension
                                 'closure',
                                 array(new Reference('faker.generator'), $method, $parameters)
                             ))->setFactoryService(
-                                    'faker.formatter_factory'
-                                )->setFactoryMethod(
-                                    'createClosure'
-                                );
+                                'faker.formatter_factory'
+                            )->setFactoryMethod(
+                                'createClosure'
+                            );
 
                             $customModifiers[$methodName][$key] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
                         }
