@@ -52,8 +52,8 @@ bazinga_faker: ~
 ```
 
 
-eference Configuration
-----------------------
+Reference Configuration
+-----------------------
 
 In order to use the `BazingaFakerBundle`, you have to configure it.
 
