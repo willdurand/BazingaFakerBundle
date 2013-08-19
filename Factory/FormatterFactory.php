@@ -15,7 +15,7 @@ namespace Bazinga\Bundle\FakerBundle\Factory;
  */
 class FormatterFactory
 {
-    static public function createClosure($generator, $method, array $parameters = array())
+    public static function createClosure($generator, $method, array $parameters = array())
     {
         if (0 === count($parameters)) {
             return function() use ($generator, $method) { return $generator->$method(); };
