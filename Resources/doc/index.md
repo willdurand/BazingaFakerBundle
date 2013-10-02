@@ -138,6 +138,7 @@ Adding additional providers to the generator is as easy as registering a tagged 
 services:
     faker.provider.my_customer_provider:
         class: Acme\LibraryBundle\Faker\MyCustomerProvider
+        arguments: [@faker.generator]
         tags:
             - { name: bazinga_faker.provider }
 ```
