@@ -35,19 +35,22 @@ to your `composer.json` file:
 
 Register the bundle in `app/AppKernel.php`:
 
+``` php
     // app/AppKernel.php
     public function registerBundles()
     {
-        return array(
+        // ...
+        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             // ...
-            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
-        );
+            $bundles[] = Bazinga\Bundle\FakerBundle\BazingaFakerBundle();
+        }
     }
+```
 
-Enable the bundle's configuration in `app/config/config.yml`:
+Enable the bundle's configuration in `app/config/config_dev.yml`:
 
 ``` yaml
-# app/config/config.yml
+# app/config/config_dev.yml
 bazinga_faker: ~
 ```
 
