@@ -42,7 +42,7 @@ Register the bundle in `app/AppKernel.php`:
         // ...
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             // ...
-            $bundles[] = Bazinga\Bundle\FakerBundle\BazingaFakerBundle();
+            $bundles[] = new Bazinga\Bundle\FakerBundle\BazingaFakerBundle();
         }
     }
 ```
