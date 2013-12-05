@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "symfony/framework-bundle": ">=2.0,<2.4-dev",
+    "symfony/framework-bundle": "~2.0",
     "fzaninotto/faker": "~1.1"
   },
   "autoload": {
