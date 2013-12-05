@@ -10,7 +10,6 @@
 
 namespace Bazinga\Bundle\FakerBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -31,10 +30,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->beforeNormalization()
-                ->always(function($v) {
+                ->always(function ($v) {
                     if (isset($v['orm'])) {
                         $v['orm'] = strtolower($v['orm']);
                     }
+
                     return $v;
                 })
             ->end()

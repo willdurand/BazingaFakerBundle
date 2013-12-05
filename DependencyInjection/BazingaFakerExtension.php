@@ -172,7 +172,7 @@ class BazingaFakerExtension extends Extension
             }
 
             $definition = $container->getDefinition('faker.populator');
-            switch($config['orm']) {
+            switch ($config['orm']) {
                 case 'doctrine':
                     $definition->addMethodCall('addEntity', array(new Reference('faker.entities.' . $i), $number, $formatters, $customModifiers, $params['generate_id']));
                     break;
