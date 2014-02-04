@@ -125,13 +125,15 @@ class BazingaFakerExtension extends Extension
                 foreach ($params['custom_formatters'] as $column => $formatter) {
                     $method = $formatter['method'];
                     $parameters = $formatter['parameters'];
+                    $unique = $formatter['unique'];
+                    $optional = $formatter['optional'];
 
                     if (null === $method) {
                         $formatters[$column] = null;
                     } else {
                         $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
                             'closure',
-                            array(new Reference('faker.generator'), $method, $parameters)
+                            array(new Reference('faker.generator'), $method, $parameters, $unique, $optional)
                         ))->setFactoryService(
                             'faker.formatter_factory'
                         )->setFactoryMethod(
