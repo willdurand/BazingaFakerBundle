@@ -65,6 +65,8 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('parameters')
                                     ->prototype('variable')->end()
                                 ->end()
+                                ->booleanNode('unique')->defaultFalse()->end()
+                                ->scalarNode('optional')->defaultNull()->end()
                             ->end()
                         ->end()->end()
                         ->arrayNode('custom_modifiers')

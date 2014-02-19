@@ -10,13 +10,23 @@
 
 namespace Bazinga\Bundle\FakerBundle\Factory;
 
+use Faker\Generator;
+
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
 class FormatterFactory
 {
-    public static function createClosure($generator, $method, array $parameters = array())
+    public static function createClosure($generator, $method, array $parameters = array(), $unique = false, $optional = null)
     {
+        if ($unique && $generator instanceof Generator) {
+            $generator = $generator->unique();
+        }
+
+        if (null !== $optional && $generator instanceof Generator) {
+            $generator = $generator->optional((double) $optional);
+        }
+
         if (0 === count($parameters)) {
             return function () use ($generator, $method) { return $generator->$method(); };
         }
