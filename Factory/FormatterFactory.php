@@ -23,14 +23,13 @@ class FormatterFactory
             $generator = $generator->unique();
         }
 
-        if (null !== $optional && $generator instanceof Generator) {
-            $generator = $generator->optional((double) $optional);
-        }
+        return function () use ($generator, $method, $parameters, $optional) {
 
-        if (0 === count($parameters)) {
-            return function () use ($generator, $method) { return $generator->$method(); };
-        }
+            if (null !== $optional && $generator instanceof Generator) {
+                $generator = $generator->optional((double)$optional);
+            }
 
-        return function () use ($generator, $method, $parameters) { return call_user_func_array(array($generator, $method), (array) $parameters); };
+            return call_user_func_array(array($generator, $method), (array)$parameters);
+        };
     }
 }
