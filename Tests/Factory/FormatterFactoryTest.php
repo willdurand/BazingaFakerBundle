@@ -43,7 +43,7 @@ class FormatterFactoryTest extends TestCase
         $generator
             ->expects($this->once())
             ->method('optional')
-            ->willReturn($generator)
+            ->will($this->returnValue($generator))
         ;
         $closure = FormatterFactory::createClosure($generator, 'foo', array(), null, 0.1);
 
