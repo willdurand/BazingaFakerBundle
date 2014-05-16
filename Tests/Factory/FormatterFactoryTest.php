@@ -22,8 +22,30 @@ class FormatterFactoryTest extends TestCase
             ->expects($this->once())
             ->method('foo')
         ;
+        $generator
+            ->expects($this->never())
+            ->method('optional')
+        ;
 
         $closure = FormatterFactory::createClosure($generator, 'foo');
+
+        $this->assertTrue(is_callable($closure));
+        $closure();
+    }
+
+    public function testCreateClosureWithOptional()
+    {
+        $generator = $this->getMock('Faker\Generator', array('foo','optional'));
+        $generator
+            ->expects($this->once())
+            ->method('foo')
+        ;
+        $generator
+            ->expects($this->once())
+            ->method('optional')
+            ->will($this->returnValue($generator))
+        ;
+        $closure = FormatterFactory::createClosure($generator, 'foo', array(), null, 0.1);
 
         $this->assertTrue(is_callable($closure));
         $closure();
