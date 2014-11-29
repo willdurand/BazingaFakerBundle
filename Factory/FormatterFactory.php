@@ -26,7 +26,7 @@ class FormatterFactory
         return function () use ($generator, $method, $parameters, $optional) {
 
             if (null !== $optional && $generator instanceof Generator) {
-                $generator = $generator->optional((double) $optional);
+                $generator = $generator->optional();
             }
 
             return call_user_func_array(array($generator, $method), (array) $parameters);
