@@ -10,7 +10,7 @@
     </parameters>
 
     <services>
-        <service id="faker.generator" factory-class="%faker.generator.class%" class="%faker.generator.class%" factory-method="create" />
+        <service id="faker.generator" class="%faker.generator.class%" />
 
         <service id="faker.populator" class="%faker.populator.class%">
             <argument type="service" id="faker.generator" />
