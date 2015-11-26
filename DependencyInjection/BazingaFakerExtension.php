@@ -41,10 +41,22 @@ class BazingaFakerExtension extends Extension
                 ;
         }
 
-        $container
+        $definition = $container
             ->getDefinition('faker.generator')
             ->setArguments(array($config['locale']))
             ;
+
+        // BC sf<2.6
+        if (method_exists($definition, 'setFactory')) {
+            $definition->setFactory(array(
+                $container->getParameter('faker.generator.class'),
+                'create'
+            ));
+        } else {
+            $definition
+                ->setFactoryClass($container->getParameter('faker.generator.class'))
+                ->setFactoryMethod('create');
+        }
 
         switch ($config['orm']) {
             case 'propel':
@@ -95,13 +107,18 @@ class BazingaFakerExtension extends Extension
                     break;
 
                 case 'doctrine':
-                    $container
-                        ->register('faker.entities.'.$i.'.metadata')
-                        ->setFactoryService('doctrine.orm.entity_manager')
-                        ->setFactoryMethod('getClassMetadata')
+                    $definition = $container->register('faker.entities.'.$i.'.metadata');
+                    if (method_exists($definition, 'setFactory')) {
+                        $definition->setFactory(array(new Reference('doctrine.orm.entity_manager'), 'getClassMetadata'));
+                    } else {
+                        $definition
+                            ->setFactoryService('doctrine.orm.entity_manager')
+                            ->setFactoryMethod('getClassMetadata');
+
+                    }
+                    $definition
                         ->setClass('Doctrine\ORM\Mapping\ClassMetadata')
-                        ->setArguments(array($class))
-                        ;
+                        ->setArguments(array($class));
 
                     $container
                         ->register('faker.entities.'.$i)
@@ -131,14 +148,17 @@ class BazingaFakerExtension extends Extension
                     if (null === $method) {
                         $formatters[$column] = null;
                     } else {
-                        $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
+                        $definition = $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
                             'closure',
                             array(new Reference('faker.generator'), $method, $parameters, $unique, $optional)
-                        ))->setFactoryService(
-                            'faker.formatter_factory'
-                        )->setFactoryMethod(
-                            'createClosure'
-                        );
+                        ));
+                        if (method_exists($definition, 'setFactory')) {
+                            $definition->setFactory(array(new Reference('faker.formatter_factory'), 'createClosure'));
+                        } else {
+                            $definition
+                                ->setFactoryService('faker.formatter_factory')
+                                ->setFactoryMethod('createClosure');
+                        }
 
                         $formatters[$column] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
                         $j++;
@@ -157,14 +177,17 @@ class BazingaFakerExtension extends Extension
                         if (null === $method) {
                             $customModifiers[$methodName][$key] = null;
                         } else {
-                            $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
+                            $definition = $container->setDefinition('faker.entities.' . $i . '.formatters.' . $j, new Definition(
                                 'closure',
                                 array(new Reference('faker.generator'), $method, $parameters)
-                            ))->setFactoryService(
-                                'faker.formatter_factory'
-                            )->setFactoryMethod(
-                                'createClosure'
-                            );
+                            ));
+                            if (method_exists($definition, 'setFactory')) {
+                                $definition->setFactory(array(new Reference('faker.formatter_factory'), 'createClosure'));
+                            } else {
+                                $definition
+                                    ->setFactoryService('faker.formatter_factory')
+                                    ->setFactoryMethod('createClosure');
+                            }
 
                             $customModifiers[$methodName][$key] = new Reference('faker.entities.' . $i . '.formatters.' . $j);
                         }
