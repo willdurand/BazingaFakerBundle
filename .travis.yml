@@ -8,15 +8,17 @@ php:
     - 7.0
     - hhvm
 
+env: SCRIPT=vendor/bin/simple-phpunit
+
 matrix:
     fast_finish: true
     include:
         - php: 5.3
-          env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
+          env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak SCRIPT=phpunit
         - php: 5.6
-          env: SYMFONY_VERSION='2.8.*@dev' DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable"
+          env: SYMFONY_VERSION='2.8.*@dev' DEPENDENCIES=dev COMPOSER_FLAGS="--prefer-stable" SCRIPT=phpunit
         - php: 5.6
-          env: DEPENDENCIES=dev
+          env: DEPENDENCIES=dev SCRIPT=phpunit
 
 before_install:
     - composer self-update
@@ -26,4 +28,4 @@ before_install:
 install: composer update $COMPOSER_FLAGS
 
 script:
-    - phpunit --coverage-text
+    - $SCRIPT --coverage-text

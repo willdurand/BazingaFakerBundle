@@ -64,6 +64,11 @@ class BazingaFakerExtension extends Extension
                 $container->setParameter('faker.entity.class', 'Faker\ORM\Propel\EntityPopulator');
                 break;
 
+            case 'propel2':
+                $container->setParameter('faker.populator.class', 'Faker\ORM\Propel2\Populator');
+                $container->setParameter('faker.entity.class', 'Faker\ORM\Propel2\EntityPopulator');
+                break;
+
             case 'doctrine':
                 $container
                     ->getDefinition('faker.populator')
@@ -98,6 +103,7 @@ class BazingaFakerExtension extends Extension
             $number = isset($params['number']) ? $params['number'] : 5;
 
             switch ($config['orm']) {
+                case 'propel2':
                 case 'propel':
                     $container
                         ->register('faker.entities.' . $i)
