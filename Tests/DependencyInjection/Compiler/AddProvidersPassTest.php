@@ -16,10 +16,13 @@ class AddProvidersPassTest extends TestCase
         $targetService = new Definition();
         $targetService->setClass('Faker\Generator');
 
-        $provider = $this->getMock('Acme\Faker\Provider\CustomFakeDataProvider');
+        $provider = $this->getMockBuilder('Acme\Faker\Provider\CustomFakeDataProvider')->getMock();
         $providerService = new Definition();
         $providerService->setClass(get_class($provider));
-        $providerService->addTag('bazinga_faker.provider');
+        $providerService
+            ->addTag('bazinga_faker.provider')
+            ->setPublic(true)
+        ;
 
         $builder = new ContainerBuilder();
         $builder->addDefinitions(array(

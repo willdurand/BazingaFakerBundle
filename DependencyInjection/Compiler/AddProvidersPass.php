@@ -18,6 +18,7 @@ class AddProvidersPass implements CompilerPassInterface
             $container
                 ->getDefinition('faker.generator')
                 ->addMethodCall('addProvider', array(new Reference($id)))
+                ->setPublic(true)
             ;
         }
     }

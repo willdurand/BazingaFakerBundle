@@ -17,7 +17,11 @@ class FormatterFactoryTest extends TestCase
 {
     public function testCreateClosureWithoutParameters()
     {
-        $generator = $this->getMock('Faker\Generator', array('foo'));
+        $generator = $this
+            ->getMockBuilder('Faker\Generator')
+            ->setMethods(array('foo', 'optional'))
+            ->getMock()
+        ;
         $generator
             ->expects($this->once())
             ->method('foo')
@@ -35,7 +39,11 @@ class FormatterFactoryTest extends TestCase
 
     public function testCreateClosureWithOptional()
     {
-        $generator = $this->getMock('Faker\Generator', array('foo','optional'));
+        $generator = $this
+            ->getMockBuilder('Faker\Generator')
+            ->setMethods(array('foo','optional'))
+            ->getMock()
+        ;
         $generator
             ->expects($this->once())
             ->method('foo')
@@ -66,7 +74,11 @@ class FormatterFactoryTest extends TestCase
      */
     public function testCreateClosureWithParameters(array $parameters)
     {
-        $generator = $this->getMock('Faker\Generator', array('foo'));
+        $generator = $this
+            ->getMockBuilder('Faker\Generator')
+            ->setMethods(array('foo'))
+            ->getMock()
+        ;
         $matcher = $generator
             ->expects($this->once())
             ->method('foo')
