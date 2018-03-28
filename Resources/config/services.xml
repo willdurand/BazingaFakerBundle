@@ -1,23 +1,34 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
         <parameter key="faker.generator.class">Faker\Factory</parameter>
         <parameter key="faker.populator.class">Faker\ORM\Propel\Populator</parameter>
         <parameter key="faker.entity.class">Faker\ORM\Propel\EntityPopulator</parameter>
+        <parameter key="faker.populate_command.class">Bazinga\Bundle\FakerBundle\Command\PopulateCommand</parameter>
     </parameters>
 
     <services>
         <service id="faker.generator" class="%faker.generator.class%" />
+
+        <service id="Faker\Factory" alias="faker.generator" />
 
         <service id="faker.populator" class="%faker.populator.class%">
             <argument type="service" id="faker.generator" />
             <argument />
         </service>
 
-        <service id="faker.formatter_factory" class="Bazinga\Bundle\FakerBundle\Factory\FormatterFactory"></service>
+        <service id="Faker\ORM\Propel\Populator" alias="faker.populator" />
+
+        <service id="faker.formatter_factory" class="Bazinga\Bundle\FakerBundle\Factory\FormatterFactory" />
+
+        <service id="Bazinga\Bundle\FakerBundle\Factory\FormatterFactory" alias="faker.formatter_factory" />
+
+        <service id="Bazinga\Bundle\FakerBundle\Command\PopulateCommand" class="%faker.populate.class%">
+            <tag name="console.command" />
+        </service>
     </services>
 
 </container>
