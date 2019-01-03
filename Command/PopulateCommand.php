@@ -19,6 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PopulateCommand extends ContainerAwareCommand
 {
+    private $populator;
+
+    public function setPopulator($populator)
+    {
+        $this->populator = $populator;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -41,8 +48,7 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $populator = $this->getContainer()->get('faker.populator');
-        $insertedPks = $populator->execute();
+        $insertedPks = $this->populator->execute();
 
         $output->writeln('');
 
