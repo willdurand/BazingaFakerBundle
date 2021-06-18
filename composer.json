@@ -1,5 +1,5 @@
 {
-    "name": "willdurand/faker-bundle",
+    "name": "herz3h/faker-bundle-sf4",
     "description": "Put the awesome Faker lib into the DIC and populate your database with fake data.",
     "keywords": ["faker", "fixtures", "data"],
     "type": "symfony-bundle",
